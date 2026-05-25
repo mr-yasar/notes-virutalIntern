@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magical Notes - Keep Your Thoughts</title>
+    <!-- Google Fonts: Outfit for sleek modern UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background glowing decorative blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-area">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                <h1>Magical Notes</h1>
+            </div>
+            <div class="search-bar-container">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" id="searchInput" placeholder="Search by title, content, or category...">
+                <button id="clearSearchBtn" class="clear-btn" style="display: none;">&times;</button>
+            </div>
+        </header>
+
+        <!-- CATEGORY TABS / FILTERS -->
+        <div class="filters-container">
+            <button class="filter-tab active" data-category="all">All</button>
+            <button class="filter-tab" data-category="General">General</button>
+            <button class="filter-tab" data-category="Personal">Personal</button>
+            <button class="filter-tab" data-category="Work">Work</button>
+            <button class="filter-tab" data-category="Ideas">Ideas</button>
+        </div>
+
+        <main class="app-main">
+            <!-- CREATE NOTE FORM -->
+            <section class="create-note-section">
+                <form id="noteForm" class="note-form collapsed">
+                    <!-- Collapsed view triggers expansion -->
+                    <div class="collapsed-trigger" id="collapsedTrigger">
+                        <span>Take a note...</span>
+                    </div>
+
+                    <!-- Expanded elements -->
+                    <div class="expanded-only">
+                        <input type="text" id="noteTitle" placeholder="Title" autocomplete="off">
+                        <textarea id="noteContent" placeholder="Take a note..." rows="1" required></textarea>
+                        
+                        <div class="form-footer">
+                            <div class="form-options">
+                                <!-- Color Picker Options -->
+                                <div class="color-picker-container">
+                                    <button type="button" class="option-btn color-btn-trigger" title="Change note color">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 11-8-8a5 5 0 0 0-7.54 6.4L19 23l2-2a5 5 0 0 0 0-7z"/><path d="M5 14h.01"/><path d="M9.5 9.5h.01"/><path d="M10 14h.01"/><path d="M14 10h.01"/><path d="M14 15h.01"/></svg>
+                                    </button>
+                                    <div class="color-palette" id="formColorPalette">
+                                        <button type="button" class="color-option active" data-color="#20242c" style="background-color: #20242c;" title="Charcoal"></button>
+                                        <button type="button" class="color-option" data-color="#3c2a4d" style="background-color: #3c2a4d;" title="Plum"></button>
+                                        <button type="button" class="color-option" data-color="#1a3d3c" style="background-color: #1a3d3c;" title="Teal"></button>
+                                        <button type="button" class="color-option" data-color="#1e295d" style="background-color: #1e295d;" title="Indigo"></button>
+                                        <button type="button" class="color-option" data-color="#283a24" style="background-color: #283a24;" title="Forest"></button>
+                                    </div>
+                                </div>
+
+                                <!-- Category Selector -->
+                                <div class="category-selector-container">
+                                    <select id="noteCategory">
+                                        <option value="General">General</option>
+                                        <option value="Personal">Personal</option>
+                                        <option value="Work">Work</option>
+                                        <option value="Ideas">Ideas</option>
+                                    </select>
+                                </div>
+
+                                <!-- Pin Toggle -->
+                                <button type="button" id="formPinBtn" class="option-btn pin-toggle" title="Pin Note">
+                                    <svg class="pin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-.44-1.24l-2.78-3.47A2 2 0 0 1 15 9.3V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4.3a2 2 0 0 1-.78 1.23L5.44 14a2 2 0 0 0-.44 1.24Z"/></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" id="closeFormBtn" class="btn btn-secondary">Close</button>
+                                <button type="submit" id="saveNoteBtn" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- NOTES DISPLAY AREA -->
+            <section class="notes-section">
+                <!-- Pinned Notes Container -->
+                <div id="pinnedSection" class="notes-group" style="display: none;">
+                    <h2 class="section-title">Pinned</h2>
+                    <div id="pinnedGrid" class="notes-grid"></div>
+                </div>
+
+                <!-- Regular Notes Container -->
+                <div id="othersSection" class="notes-group">
+                    <h2 id="othersTitle" class="section-title" style="display: none;">Notes</h2>
+                    <div id="notesGrid" class="notes-grid"></div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-illustration">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h3>No notes here</h3>
+                    <p>Click "Take a note..." above to write down your first idea!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- EDIT NOTE MODAL -->
+    <div id="editModal" class="modal-backdrop" style="display: none;">
+        <div class="modal-content" id="modalCard">
+            <div class="modal-header">
+                <h2>Edit Note</h2>
+                <button id="closeModalBtn" class="close-modal">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editNoteId">
+                <div class="modal-body">
+                    <input type="text" id="editNoteTitle" placeholder="Title" autocomplete="off">
+                    <textarea id="editNoteContent" placeholder="Content..." rows="6" required></textarea>
+                    
+                    <div class="modal-fields">
+                        <div class="field-group">
+                            <label for="editNoteCategory">Category</label>
+                            <select id="editNoteCategory">
+                                <option value="General">General</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Work">Work</option>
+                                <option value="Ideas">Ideas</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Note Color</label>
+                            <div class="color-palette" id="modalColorPalette">
+                                <button type="button" class="color-option" data-color="#20242c" style="background-color: #20242c;" title="Charcoal"></button>
+                                <button type="button" class="color-option" data-color="#3c2a4d" style="background-color: #3c2a4d;" title="Plum"></button>
+                                <button type="button" class="color-option" data-color="#1a3d3c" style="background-color: #1a3d3c;" title="Teal"></button>
+                                <button type="button" class="color-option" data-color="#1e295d" style="background-color: #1e295d;" title="Indigo"></button>
+                                <button type="button" class="color-option" data-color="#283a24" style="background-color: #283a24;" title="Forest"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modalPinBtn" class="modal-pin-btn" title="Pin Note">
+                        <svg class="pin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-.44-1.24l-2.78-3.47A2 2 0 0 1 15 9.3V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4.3a2 2 0 0 1-.78 1.23L5.44 14a2 2 0 0 0-.44 1.24Z"/></svg>
+                        <span>Pin Note</span>
+                    </button>
+                    <div class="actions-right">
+                        <button type="button" id="cancelModalBtn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

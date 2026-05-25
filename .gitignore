@@ -1,0 +1,19 @@
+# SQLite Database
+notes.db
+notes.db-journal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+
+# Local workspace bypass wrapper
+powershell.cmd
